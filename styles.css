@@ -1,235 +1,81 @@
 body {
   font-family: Arial, sans-serif;
-  background: #f5f5f5;
+  background: #f3f3f3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.chat-container {
+  width: 90%;
+  max-width: 600px;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  margin: 0;
-  padding: 20px;
 }
 
 h1 {
+  text-align: center;
   margin-bottom: 20px;
 }
 
-#chat-box {
-  width: 100%;
-  max-width: 600px;
-  height: 400px;
+.messages {
+  flex: 1;
   border: 1px solid #ddd;
-  border-radius: 10px;
+  border-radius: 8px;
   padding: 10px;
   overflow-y: auto;
-  background: #fff;
-  margin-bottom: 15px;
-  display: flex;
-  flex-direction: column;
+  margin-bottom: 10px;
+  height: 400px;
+  background: #fafafa;
 }
 
 .message {
+  margin: 8px 0;
   padding: 8px 12px;
-  margin: 5px 0;
   border-radius: 8px;
-  max-width: 75%;
-  word-wrap: break-word;
+  max-width: 80%;
+  line-height: 1.4;
 }
 
 .user {
-  background: #007bff;
-  color: white;
+  background: #d1e7ff;
   align-self: flex-end;
   text-align: right;
 }
 
 .bot {
-  background: #e5e5e5;
-  color: #333;
+  background: #e9ecef;
   align-self: flex-start;
-  text-align: left;
 }
 
 form {
   display: flex;
-  width: 100%;
-  max-width: 600px;
 }
 
 input {
   flex: 1;
   padding: 10px;
   border: 1px solid #ddd;
-  border-radius: 5px 0 0 5px;
+  border-radius: 8px 0 0 8px;
   outline: none;
 }
 
 button {
-  padding: 10px 20px;
-  border: none;
   background: #007bff;
   color: white;
-  border-radius: 0 5px 5px 0;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 0 8px 8px 0;
   cursor: pointer;
+  transition: background 0.3s;
 }
 
 button:hover {
   background: #0056b3;
-}
-  font-size: 1.4rem;
-  font-weight: bold;
-}
-
-/* Área de mensagens */
-.chat {
-  flex: 1;
-  padding: 1rem;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  background: #f9fafb;
-}
-
-/* Balões */
-.msg {
-  display: flex;
-  max-width: 80%;
-}
-
-.msg__bubble {
-  padding: 10px 14px;
-  border-radius: 12px;
-  font-size: 0.95rem;
-  line-height: 1.3rem;
-  white-space: pre-wrap;
-}
-
-/* Usuário */
-.msg.user {
-  margin-left: auto;
-}
-.msg.user .msg__bubble {
-  background: #2563eb;
-  color: white;
-  border-bottom-right-radius: 2px;
-}
-
-/* Bot */
-.msg.bot {
-  margin-right: auto;
-}
-.msg.bot .msg__bubble {
-  background: #e5e7eb;
-  color: #111;
-  border-bottom-left-radius: 2px;
-}
-
-/* Composer */
-.composer {
-  border-top: 1px solid #ddd;
-  background: #fff;
-  padding: 0.5rem;
-}
-
-#composerForm {
-  display: flex;
-  gap: 8px;
-}
-
-#input {
-  flex: 1;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  resize: none;
-  font-size: 1rem;
-}
-
-button {
-  background: #2563eb;
-  color: white;
-  border: none;
-  padding: 0 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: 0.2s;
-}
-button:hover {
-  background: #1e40af;
-}
-
-/* Loading "digitando..." */
-.typing {
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  margin: 0 2px;
-  background: #555;
-  border-radius: 50%;
-  animation: blink 1.4s infinite both;
-}
-.typing:nth-child(2) {
-  animation-delay: 0.2s;
-}
-.typing:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-@keyframes blink {
-  0%, 80%, 100% {
-    transform: scale(0.6);
-    opacity: 0.3;
-  }
-  40% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-}
-
-.msg__bubble {
-  padding: 10px 14px;
-  border-radius: 12px;
-  max-width: 70%;
-}
-
-.msg.user .msg__bubble {
-  margin-left: auto;
-  background: #2563eb;
-  color: white;
-}
-
-.msg.bot .msg__bubble {
-  margin-right: auto;
-  background: #e5e7eb;
-  color: #111;
-}
-
-.composer {
-  padding: 0.5rem;
-  background: #f9fafb;
-  border-top: 1px solid #ddd;
-}
-
-#composerForm {
-  display: flex;
-  gap: 8px;
-}
-
-#input {
-  flex: 1;
-  padding: 10px;
-  resize: none;
-}
-
-button {
-  background: #2563eb;
-  color: white;
-  border: none;
-  padding: 10px 16px;
-  cursor: pointer;
-  border-radius: 8px;
-}
-button:hover {
-  background: #1e40af;
 }
