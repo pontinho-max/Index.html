@@ -1,39 +1,39 @@
-const API_URL = "https://mim-3fo3u8grd-pontinho-s-projects.vercel.app/api/chat";
-
-const form = document.querySelector("form");
-const input = document.getElementById("message");
-const chatBox = document.getElementById("chat-box");
-
-// Função para exibir mensagens no chat
-function addMessage(sender, text) {
-  const messageDiv = document.createElement("div");
-  messageDiv.classList.add("message", sender);
-  messageDiv.textContent = text;
-  chatBox.appendChild(messageDiv);
-  chatBox.scrollTop = chatBox.scrollHeight;
-}
+const form = document.getElementById("chat-form");
+const input = document.getElementById("user-input");
+const messages = document.getElementById("messages");
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const userMessage = input.value.trim();
   if (!userMessage) return;
 
-  // Mostrar mensagem do usuário
-  addMessage("user", userMessage);
+  // mostra mensagem do usuário
+  addMessage("Você", userMessage);
   input.value = "";
 
   try {
-    // Enviar para o backend
-    const res = await fetch(API_URL, {
+    const response = await fetch("/api/chat", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        messages: [{ role: "user", content: userMessage }],
-      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ message: userMessage }),
     });
 
-    const data = await res.json();
+    const data = await response.json();
+    addMessage("🤖 IA", data.reply);
+  } catch (err) {
+    addMessage("Erro", "Não foi possível conectar ao servidor.");
+  }
+});
 
+function addMessage(sender, text) {
+  const messageEl = document.createElement("div");
+  messageEl.classList.add("message");
+  messageEl.innerHTML = `<strong>${sender}:</strong> ${text}`;
+  messages.appendChild(messageEl);
+  messages.scrollTop = messages.scrollHeight;
+}
     if (data.reply) {
       addMessage("bot", data.reply);
     } else {
