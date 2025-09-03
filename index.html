@@ -1,275 +1,33 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<!doctype html>
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chat IA Gemini</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Roboto', sans-serif;
-      background: linear-gradient(120deg, #89f7fe, #66a6ff);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    .chat-container {
-      width: 100%;
-      max-width: 450px;
-      height: 600px;
-      background: white;
-      border-radius: 15px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    .chat-header {
-      background: #4b6cb7;
-      color: white;
-      padding: 15px;
-      font-size: 18px;
-      font-weight: 500;
-      text-align: center;
-    }
-
-    #chat {
-      flex: 1;
-      padding: 15px;
-      overflow-y: auto;
-      background: #f5f5f5;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .message {
-      margin: 10px 0;
-      padding: 10px 15px;
-      border-radius: 20px;
-      max-width: 80%;
-      word-wrap: break-word;
-    }
-
-    .user {
-      background: #66a6ff;
-      color: white;
-      align-self: flex-end;
-    }
-
-    .bot {
-      background: #e0e0e0;
-      color: black;
-      align-self: flex-start;
-    }
-    
-    .loading-indicator {
-      font-style: italic;
-      color: #777;
-    }
-
-    #inputArea {
-      display: flex;
-      padding: 10px;
-      background: #f0f0f0;
-    }
-
-    #message {
-      flex: 1;
-      padding: 10px;
-      border-radius: 20px;
-      border: 1px solid #ccc;
-      outline: none;
-      font-size: 16px;
-    }
-
-    #sendBtn {
-      margin-left: 10px;
-      padding: 0 20px;
-      border: none;
-      border-radius: 20px;
-      background: #4b6cb7;
-      color: white;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    #sendBtn:hover {
-      background: #3a539b;
-    }
-  </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chat IA - Gemini</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <div class="app">
+    <header class="app__header">
+      <h1>🤖 Chat IA</h1>
+    </header>
 
-  <div class="chat-container">
-    <div class="chat-header">Chat IA Gemini</div>
-    <div id="chat"></div>
-    <div id="inputArea">
-      <input type="text" id="message" placeholder="Escreva sua pergunta...">
-      <button id="sendBtn" onclick="sendMessage()">Enviar</button>
-    </div>
+    <main id="chat" class="chat"></main>
+
+    <footer class="composer">
+      <form id="composerForm">
+        <textarea id="input" placeholder="Digite sua mensagem..." rows="1"></textarea>
+        <button type="submit">Enviar</button>
+      </form>
+    </footer>
   </div>
 
-  <script>
-    // ⚠️ Importante: Em uma aplicação real, a chave da API deve ser
-    // gerenciada no backend para evitar exposição.
-    // Para fins de teste local, você pode usar uma variável aqui,
-    // mas **nunca a publique em código de produção no frontend**.
-    const API_KEY = "AQ.Ab8RN6KAYb396RvQjP0py5lR_4hY1mbkocwt_bvl0hZbW2eW-g"; // Substitua por sua chave Gemini
-    const MODEL = "gemini-1.5-flash";
-    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}`;
-
-    async function sendMessage() {
-      const input = document.getElementById("message");
-      const chat = document.getElementById("chat");
-      const sendBtn = document.getElementById("sendBtn");
-
-      if (!input.value.trim()) return;
-
-      const userText = input.value;
-      
-      // Adicionar mensagem do usuário
-      const userMsg = document.createElement("div");
-      userMsg.classList.add("message", "user");
-      userMsg.textContent = userText;
-      chat.appendChild(userMsg);
-
-      // Limpar e desabilitar input
-      input.value = "";
-      input.disabled = true;
-      sendBtn.disabled = true;
-
-      // Adicionar indicador de carregamento
-      const loadingMsg = document.createElement("div");
-      loadingMsg.classList.add("message", "bot", "loading-indicator");
-      loadingMsg.textContent = "Digitando...";
-      chat.appendChild(loadingMsg);
-      chat.scrollTop = chat.scrollHeight;
-
-      // Chamada API Gemini
-      try {
-        const response = await fetch(API_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: userText }] }]
-          })
-        });
-
-        // Checar se a resposta da API foi bem-sucedida
-        if (!response.ok) {
-          throw new Error(`Erro HTTP: ${response.status}`);
-        }
-
-        const data = await response.json();
-        const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || "⚠️ Erro na resposta. Resposta vazia.";
-
-        // Remover indicador de carregamento
-        chat.removeChild(loadingMsg);
-
-        const botMsg = document.createElement("div");
-        botMsg.classList.add("message", "bot");
-        botMsg.textContent = reply;
-        chat.appendChild(botMsg);
-      } catch (err) {
-        // Remover indicador de carregamento e exibir erro detalhado
-        chat.removeChild(loadingMsg);
-        
-        const errorMsg = document.createElement("div");
-        errorMsg.classList.add("message", "bot");
-        errorMsg.textContent = `⚠️ Erro: ${err.message}`;
-        chat.appendChild(errorMsg);
-        console.error("Erro na comunicação com a API:", err);
-      } finally {
-        // Habilitar input novamente
-        input.disabled = false;
-        sendBtn.disabled = false;
-        input.focus();
-        chat.scrollTop = chat.scrollHeight;
-      }
-    }
-
-    // Enviar mensagem ao apertar Enter
-    document.getElementById("message").addEventListener("keypress", function(e) {
-      if (e.key === "Enter") sendMessage();
-    });
-  </script>
-
-</body>
-</html>
-  </style>
-</head>
-<body>
-
-  <div class="chat-container">
-    <div class="chat-header">Chat IA Gemini</div>
-    <div id="chat"></div>
-    <div id="inputArea">
-      <input type="text" id="message" placeholder="Escreva sua pergunta...">
-      <button id="sendBtn" onclick="sendMessage()">Enviar</button>
+  <template id="msgTemplate">
+    <div class="msg">
+      <div class="msg__bubble"></div>
     </div>
-  </div>
+  </template>
 
-  <script>
-    const API_KEY = "AQ.Ab8RN6KAYb396RvQjP0py5lR_4hY1mbkocwt_bvl0hZbW2eW-g"; // Coloque sua chave Gemini
-    const MODEL = "gemini-1.5-flash";
-    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}`;
-
-    async function sendMessage() {
-      const input = document.getElementById("message");
-      const chat = document.getElementById("chat");
-
-      if (!input.value) return;
-
-      // Adicionar mensagem do usuário
-      const userMsg = document.createElement("div");
-      userMsg.classList.add("message", "user");
-      userMsg.textContent = input.value;
-      chat.appendChild(userMsg);
-
-      // Scroll para o final
-      chat.scrollTop = chat.scrollHeight;
-
-      // Limpar input
-      const text = input.value;
-      input.value = "";
-
-      // Chamada API Gemini
-      try {
-        const response = await fetch(API_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text }] }]
-          })
-        });
-
-        const data = await response.json();
-        const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || "⚠️ Erro na resposta";
-
-        const botMsg = document.createElement("div");
-        botMsg.classList.add("message", "bot");
-        botMsg.textContent = reply;
-        chat.appendChild(botMsg);
-
-        chat.scrollTop = chat.scrollHeight;
-      } catch (err) {
-        const botMsg = document.createElement("div");
-        botMsg.classList.add("message", "bot");
-        botMsg.textContent = "⚠️ Erro na comunicação com a API";
-        chat.appendChild(botMsg);
-      }
-    }
-
-    // Enviar mensagem ao apertar Enter
-    document.getElementById("message").addEventListener("keypress", function(e) {
-      if (e.key === "Enter") sendMessage();
-    });
-  </script>
-
+  <script src="app.js" defer></script>
 </body>
 </html>
