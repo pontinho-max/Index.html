@@ -119,7 +119,7 @@
     // gerenciada no backend para evitar exposição.
     // Para fins de teste local, você pode usar uma variável aqui,
     // mas **nunca a publique em código de produção no frontend**.
-    const API_KEY = "SUA_CHAVE_AQUI"; // Substitua por sua chave Gemini
+    const API_KEY = "AQ.Ab8RN6KAYb396RvQjP0py5lR_4hY1mbkocwt_bvl0hZbW2eW-g"; // Substitua por sua chave Gemini
     const MODEL = "gemini-1.5-flash";
     const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}`;
 
@@ -201,66 +201,6 @@
 
 </body>
 </html>
-      text-align: center;
-    }
-
-    #chat {
-      flex: 1;
-      padding: 15px;
-      overflow-y: auto;
-      background: #f5f5f5;
-    }
-
-    .message {
-      margin: 10px 0;
-      padding: 10px 15px;
-      border-radius: 20px;
-      max-width: 80%;
-      word-wrap: break-word;
-    }
-
-    .user {
-      background: #66a6ff;
-      color: white;
-      align-self: flex-end;
-    }
-
-    .bot {
-      background: #e0e0e0;
-      color: black;
-      align-self: flex-start;
-    }
-
-    #inputArea {
-      display: flex;
-      padding: 10px;
-      background: #f0f0f0;
-    }
-
-    #message {
-      flex: 1;
-      padding: 10px;
-      border-radius: 20px;
-      border: 1px solid #ccc;
-      outline: none;
-      font-size: 16px;
-    }
-
-    #sendBtn {
-      margin-left: 10px;
-      padding: 0 20px;
-      border: none;
-      border-radius: 20px;
-      background: #4b6cb7;
-      color: white;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    #sendBtn:hover {
-      background: #3a539b;
-    }
   </style>
 </head>
 <body>
