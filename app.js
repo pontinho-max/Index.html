@@ -3,7 +3,8 @@ const form = document.getElementById("composerForm");
 const input = document.getElementById("input");
 const tpl = document.getElementById("msgTemplate");
 
-const API_URL = "https://mim-3fo3u8grd-pontinho-s-projects.vercel.app/"; // ajuste aqui com o link do Vercel
+// coloque aqui a URL do seu backend no Vercel
+const API_URL = "https://mim-3fo3u8grd-pontinho-s-projects.vercel.app/api/chat";
 
 function renderMessage(role, text) {
   const node = tpl.content.cloneNode(true);
@@ -15,6 +16,21 @@ function renderMessage(role, text) {
   chat.scrollTop = chat.scrollHeight;
 }
 
+function renderTyping() {
+  const msg = document.createElement("div");
+  msg.className = "msg bot";
+  msg.innerHTML = `
+    <div class="msg__bubble">
+      <span class="typing"></span>
+      <span class="typing"></span>
+      <span class="typing"></span>
+    </div>
+  `;
+  chat.appendChild(msg);
+  chat.scrollTop = chat.scrollHeight;
+  return msg;
+}
+
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const text = input.value.trim();
@@ -22,18 +38,23 @@ form.addEventListener("submit", async (e) => {
   input.value = "";
   renderMessage("user", text);
 
-  // mostra "digitando..."
-  const loading = document.createElement("div");
-  loading.className = "msg bot";
-  loading.innerHTML = `<div class="msg__bubble">...</div>`;
-  chat.appendChild(loading);
-  chat.scrollTop = chat.scrollHeight;
+  // Mostra animação "digitando..."
+  const typingEl = renderTyping();
 
   try {
     const res = await fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ messages: [{ role: "user", content: text }] }),
+    });
+    const data = await res.json();
+    typingEl.remove();
+    renderMessage("bot", data.reply);
+  } catch (err) {
+    typingEl.remove();
+    renderMessage("bot", "⚠️ Erro ao conectar com o servidor");
+  }
+});
     });
     const data = await res.json();
     loading.remove();
