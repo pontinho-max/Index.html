@@ -8,8 +8,7 @@ O site está hospedado no ** GitHub Pages ** .
 Após ativar nas configurações do repositório, acesse pelo link:
 
 ```
-
-
+https://pontinho-max.github.io/mim/
 ```
 
 ## Estrutura
