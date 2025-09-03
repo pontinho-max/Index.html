@@ -7,71 +7,27 @@ form.addEventListener("submit", async (e) => {
   const userMessage = input.value.trim();
   if (!userMessage) return;
 
-  // mostra mensagem do usuário
-  addMessage("Você", userMessage);
+  addMessage("Você", userMessage, "user");
   input.value = "";
 
   try {
     const response = await fetch("/api/chat", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message: userMessage }),
     });
 
     const data = await response.json();
-    addMessage("🤖 IA", data.reply);
+    addMessage("🤖 IA", data.reply, "bot");
   } catch (err) {
-    addMessage("Erro", "Não foi possível conectar ao servidor.");
+    addMessage("Erro", "Não foi possível conectar ao servidor.", "bot");
   }
 });
 
-function addMessage(sender, text) {
+function addMessage(sender, text, type) {
   const messageEl = document.createElement("div");
-  messageEl.classList.add("message");
+  messageEl.classList.add("message", type);
   messageEl.innerHTML = `<strong>${sender}:</strong> ${text}`;
   messages.appendChild(messageEl);
   messages.scrollTop = messages.scrollHeight;
 }
-    if (data.reply) {
-      addMessage("bot", data.reply);
-    } else {
-      addMessage("bot", "⚠️ Erro: resposta inválida do servidor.");
-      console.error("Resposta inesperada:", data);
-    }
-  } catch (err) {
-    addMessage("bot", "⚠️ Erro ao conectar com o servidor.");
-    console.error(err);
-  }
-});
-  if (!text) return;
-  input.value = "";
-  renderMessage("user", text);
-
-  // Mostra animação "digitando..."
-  const typingEl = renderTyping();
-
-  try {
-    const res = await fetch(API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ messages: [{ role: "user", content: text }] }),
-    });
-    const data = await res.json();
-    typingEl.remove();
-    renderMessage("bot", data.reply);
-  } catch (err) {
-    typingEl.remove();
-    renderMessage("bot", "⚠️ Erro ao conectar com o servidor");
-  }
-});
-    });
-    const data = await res.json();
-    loading.remove();
-    renderMessage("bot", data.reply);
-  } catch (err) {
-    loading.remove();
-    renderMessage("bot", "⚠️ Erro ao conectar com o servidor");
-  }
-});
