@@ -1,32 +1,21 @@
-<!doctype html>
-<html lang="pt-br">
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Chat IA - Gemini</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chat IA</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="app">
-    <header class="app__header">🤖 Chat IA</header>
+  <h1>🤖 Chat IA</h1>
 
-    <main id="chat" class="chat"></main>
+  <div id="chat-box"></div>
 
-    <footer class="composer">
-      <form id="composerForm">
-        <textarea id="input" placeholder="Digite sua mensagem..." rows="1"></textarea>
-        <button type="submit">Enviar</button>
-      </form>
-    </footer>
-  </div>
+  <form>
+    <input type="text" id="message" placeholder="Digite sua mensagem..." />
+    <button type="submit">Enviar</button>
+  </form>
 
-  <!-- Template de mensagem -->
-  <template id="msgTemplate">
-    <div class="msg">
-      <div class="msg__bubble"></div>
-    </div>
-  </template>
-
-  <script src="app.js" defer></script>
+  <script src="app.js"></script>
 </body>
 </html>
